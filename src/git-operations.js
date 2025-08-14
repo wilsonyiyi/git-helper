@@ -101,6 +101,12 @@ class GitOperations {
   async deleteRemoteBranches(branches, remote = 'origin') {
     const results = [];
 
+    // 检查远程仓库是否存在
+    const remotes = await this.getRemotes();
+    if (!remotes.includes(remote)) {
+      throw new Error(`远程仓库 '${remote}' 不存在`);
+    }
+
     for (const branch of branches) {
       try {
         await this.git.push(remote, `:${branch}`);
@@ -109,10 +115,21 @@ class GitOperations {
           success: true
         });
       } catch (error) {
+        let errorMessage = error.message;
+        
+        // 提供更友好的错误信息
+        if (error.message.includes('does not exist')) {
+          errorMessage = '分支不存在';
+        } else if (error.message.includes('permission denied') || error.message.includes('forbidden')) {
+          errorMessage = '权限不足';
+        } else if (error.message.includes('network') || error.message.includes('connection')) {
+          errorMessage = '网络连接失败';
+        }
+        
         results.push({
           branch,
           success: false,
-          error: error.message
+          error: errorMessage
         });
       }
     }
