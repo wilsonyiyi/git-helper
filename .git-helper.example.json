@@ -1,0 +1,7 @@
+{
+  "defaultPatterns": ["feature/*", "hotfix/*", "bugfix/*"],
+  "defaultWhitelist": ["main", "master", "develop", "dev", "staging", "production"],
+  "defaultRemote": "origin",
+  "autoConfirm": false,
+  "forceDelete": false
+}

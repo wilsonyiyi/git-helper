@@ -1,0 +1,33 @@
+{
+  "name": "git-helper",
+  "version": "1.0.0",
+  "description": "一个用于清理 Git 分支的命令行工具，支持 glob 模式和白名单",
+  "main": "src/index.js",
+  "bin": {
+    "git-helper": "./bin/git-helper.js"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "git",
+    "branch",
+    "cleanup",
+    "cli",
+    "glob",
+    "whitelist"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^11.0.0",
+    "minimatch": "^9.0.0",
+    "chalk": "^4.1.2",
+    "inquirer": "^8.2.6",
+    "simple-git": "^3.19.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
