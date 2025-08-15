@@ -67,29 +67,36 @@ class CLI {
         process.exit(1);
       }
 
+      // 获取合并后的配置
+      const config = this.configManager.getMergedConfig();
+      
+      // 合并命令行参数和配置默认值
+      const finalOptions = this.mergeOptionsWithConfig(options, config);
+
       // 验证参数
-      if (!options.patterns || options.patterns.length === 0) {
-        console.log(chalk.yellow('⚠️  请提供至少一个 glob 模式'));
+      if (!finalOptions.patterns || finalOptions.patterns.length === 0) {
+        console.log(chalk.yellow('⚠️  请提供至少一个 glob 模式或者配置 defaultPatterns'));
         console.log(chalk.gray('例如: git-helper clean -p "feature/*" -l'));
+        console.log(chalk.gray('或者: git-helper config --set defaultPatterns "feature/*,hotfix/*"'));
         process.exit(1);
       }
 
-      if (!options.local && !options.remote) {
+      if (!finalOptions.local && !finalOptions.remote) {
         console.log(chalk.yellow('⚠️  请指定要清理本地分支 (-l) 或远程分支 (-r)'));
         process.exit(1);
       }
 
       // 预览将要删除的分支
       const preview = await this.gitOps.previewDeletion({
-        patterns: options.patterns,
-        whitelist: options.whitelist || [],
-        includeLocal: options.local,
-        includeRemote: options.remote,
-        remote: options.remoteName
+        patterns: finalOptions.patterns,
+        whitelist: finalOptions.whitelist,
+        includeLocal: finalOptions.local,
+        includeRemote: finalOptions.remote,
+        remote: finalOptions.remoteName
       });
 
       // 显示预览
-      this.displayPreview(preview, options);
+      this.displayPreview(preview, finalOptions);
 
       if (preview.local.length === 0 && preview.remote.length === 0) {
         console.log(chalk.green('✅ 没有匹配的分支需要删除'));
@@ -97,13 +104,13 @@ class CLI {
       }
 
       // 如果是预览模式，直接返回
-      if (options.dryRun) {
+      if (finalOptions.dryRun) {
         console.log(chalk.blue('\n🔍 这是预览模式，没有实际删除任何分支'));
         return;
       }
 
       // 确认删除
-      if (!options.yes) {
+      if (!finalOptions.yes) {
         const prompt = new Confirm({
           name: 'confirmed',
           message: '确定要删除这些分支吗？',
@@ -119,7 +126,7 @@ class CLI {
       }
 
       // 执行删除
-      await this.executeDeletion(preview, options);
+      await this.executeDeletion(preview, finalOptions);
 
     } catch (error) {
       console.log(chalk.red(`❌ 错误: ${error.message}`));
@@ -134,19 +141,27 @@ class CLI {
         process.exit(1);
       }
 
-      if (!options.patterns || options.patterns.length === 0) {
-        console.log(chalk.yellow('⚠️  请提供至少一个 glob 模式'));
+      // 获取合并后的配置
+      const config = this.configManager.getMergedConfig();
+      
+      // 合并命令行参数和配置默认值
+      const finalOptions = this.mergeOptionsWithConfig(options, config);
+
+      if (!finalOptions.patterns || finalOptions.patterns.length === 0) {
+        console.log(chalk.yellow('⚠️  请提供至少一个 glob 模式或者配置 defaultPatterns'));
+        console.log(chalk.gray('例如: git-helper preview -p "feature/*" -l'));
+        console.log(chalk.gray('或者: git-helper config --set defaultPatterns "feature/*,hotfix/*"'));
         process.exit(1);
       }
 
       const preview = await this.gitOps.previewDeletion({
-        patterns: options.patterns,
-        whitelist: options.whitelist || [],
-        includeLocal: options.local,
-        includeRemote: options.remote
+        patterns: finalOptions.patterns,
+        whitelist: finalOptions.whitelist,
+        includeLocal: finalOptions.local,
+        includeRemote: finalOptions.remote
       });
 
-      this.displayPreview(preview, options);
+      this.displayPreview(preview, finalOptions);
     } catch (error) {
       console.log(chalk.red(`❌ 错误: ${error.message}`));
       process.exit(1);
@@ -241,6 +256,40 @@ class CLI {
     }
 
     console.log(chalk.green('\n✅ 分支清理完成！'));
+  }
+
+  /**
+   * 合并命令行选项和配置文件默认值
+   */
+  mergeOptionsWithConfig(options, config) {
+    const finalOptions = { ...options };
+
+    // 如果命令行没有提供 patterns，使用配置中的 defaultPatterns
+    if (!finalOptions.patterns || finalOptions.patterns.length === 0) {
+      finalOptions.patterns = config.defaultPatterns || [];
+    }
+
+    // 如果命令行没有提供 whitelist，使用配置中的 defaultWhitelist
+    if (!finalOptions.whitelist || finalOptions.whitelist.length === 0) {
+      finalOptions.whitelist = config.defaultWhitelist || [];
+    }
+
+    // 如果命令行没有提供 remoteName，使用配置中的 defaultRemote
+    if (!finalOptions.remoteName) {
+      finalOptions.remoteName = config.defaultRemote || 'origin';
+    }
+
+    // 如果命令行没有提供 yes，使用配置中的 autoConfirm
+    if (!finalOptions.yes && config.autoConfirm) {
+      finalOptions.yes = config.autoConfirm;
+    }
+
+    // 如果命令行没有提供 force，使用配置中的 forceDelete
+    if (!finalOptions.force && config.forceDelete) {
+      finalOptions.force = config.forceDelete;
+    }
+
+    return finalOptions;
   }
 
   run() {
