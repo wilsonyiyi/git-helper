@@ -1,6 +1,6 @@
 const { Command } = require('commander');
 const chalk = require('chalk');
-const inquirer = require('inquirer');
+const { Confirm } = require('enquirer');
 const GitOperations = require('./git-operations');
 const ConfigManager = require('./config-manager');
 
@@ -104,14 +104,13 @@ class CLI {
 
       // 确认删除
       if (!options.yes) {
-        const { confirmed } = await inquirer.prompt([
-          {
-            type: 'confirm',
-            name: 'confirmed',
-            message: '确定要删除这些分支吗？',
-            default: false
-          }
-        ]);
+        const prompt = new Confirm({
+          name: 'confirmed',
+          message: '确定要删除这些分支吗？',
+          initial: false
+        });
+
+        const confirmed = await prompt.run();
 
         if (!confirmed) {
           console.log(chalk.yellow('已取消操作'));

@@ -1,6 +1,6 @@
 {
   "name": "@wilsonyiyi/git-helper",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "一个用于清理 Git 分支的命令行工具，支持 glob 模式和白名单",
   "main": "src/index.js",
   "bin": {
@@ -61,14 +61,14 @@
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
-    "commander": "^11.0.0",
-    "minimatch": "^9.0.0",
+    "commander": "^9.5.0",
+    "minimatch": "^5.1.6",
     "chalk": "^4.1.2",
-    "inquirer": "^8.2.6",
-    "simple-git": "^3.19.0"
+    "enquirer": "^2.4.1",
+    "simple-git": "^2.48.0"
   },
   "devDependencies": {
-    "semantic-release": "^22.0.0"
+    "semantic-release": "^19.0.5"
   },
   "engines": {
     "node": ">=14.0.0",

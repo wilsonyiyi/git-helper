@@ -1,4 +1,4 @@
-const { simpleGit } = require('simple-git');
+const simpleGit = require('simple-git');
 const { minimatch } = require('minimatch');
 const chalk = require('chalk');
 
@@ -13,7 +13,7 @@ class GitOperations {
   async getLocalBranches() {
     try {
       const summary = await this.git.branchLocal();
-      return Object.keys(summary.branches).filter(branch => branch !== 'HEAD');
+      return summary.all.filter(branch => branch !== 'HEAD');
     } catch (error) {
       throw new Error(`获取本地分支失败: ${error.message}`);
     }
@@ -24,8 +24,8 @@ class GitOperations {
    */
   async getRemoteBranches() {
     try {
-      const summary = await this.git.branch(['--remote']);
-      return Object.keys(summary.branches)
+      const summary = await this.git.branch(['-r']);
+      return summary.all
         .filter(branch => branch !== 'HEAD')
         .map(branch => branch.replace(/^origin\//, ''));
     } catch (error) {
@@ -78,7 +78,11 @@ class GitOperations {
           continue;
         }
 
-        await this.git.deleteLocalBranch(branch, force);
+        if (force) {
+          await this.git.branch(['-D', branch]);
+        } else {
+          await this.git.branch(['-d', branch]);
+        }
         results.push({
           branch,
           success: true
@@ -109,7 +113,7 @@ class GitOperations {
 
     for (const branch of branches) {
       try {
-        await this.git.push(remote, `:${branch}`);
+        await this.git.push(remote, branch, ['--delete']);
         results.push({
           branch,
           success: true
