@@ -1,6 +1,8 @@
 const { Command } = require('commander');
 const chalk = require('chalk');
 const { Confirm } = require('enquirer');
+const path = require('path');
+const fs = require('fs');
 const GitOperations = require('./git-operations');
 const ConfigManager = require('./config-manager');
 
@@ -12,11 +14,25 @@ class CLI {
     this.setupCommands();
   }
 
+  /**
+   * 从 package.json 获取版本号
+   */
+  getVersion() {
+    try {
+      const packageJsonPath = path.join(__dirname, '..', 'package.json');
+      const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
+      return packageJson.version;
+    } catch (error) {
+      console.warn(chalk.yellow(`警告: 无法读取版本号: ${error.message}`));
+      return '未知版本';
+    }
+  }
+
   setupCommands() {
     this.program
       .name('git-helper')
       .description('Git 分支清理工具 - 支持 glob 模式和白名单')
-      .version('1.0.0');
+      .version(this.getVersion());
 
     // 清理分支命令
     this.program
