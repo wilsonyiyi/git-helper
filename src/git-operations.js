@@ -1,5 +1,5 @@
 const simpleGit = require('simple-git');
-const { minimatch } = require('minimatch');
+const minimatch = require('minimatch');
 const chalk = require('chalk');
 
 class GitOperations {
