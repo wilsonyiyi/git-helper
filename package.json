@@ -1,5 +1,5 @@
 {
-  "name": "@wilsonyiyi/git-helper",
+  "name": "@wilson_janet/git-helper",
   "version": "0.1.2",
   "description": "一个用于清理 Git 分支的命令行工具，支持 glob 模式和白名单",
   "main": "src/index.js",

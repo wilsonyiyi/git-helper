@@ -71,4 +71,4 @@ fi
 
 echo -e "${GREEN}🎉 发布完成！${NC}"
 echo -e "${BLUE}📦 版本: $NEW_VERSION${NC}"
-echo -e "${BLUE}🔗 NPM: https://www.npmjs.com/package/@wilsonyiyi/git-helper${NC}"
+echo -e "${BLUE}🔗 NPM: https://www.npmjs.com/package/@wilson_janet/git-helper${NC}"

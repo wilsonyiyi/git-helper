@@ -16,7 +16,7 @@
 ### 全局安装
 
 ```bash
-npm install -g @wilsonyiyi/git-helper
+npm install -g @wilson_janet/git-helper
 ```
 
 ### 本地开发
@@ -253,7 +253,7 @@ MIT License
 
 ## 链接
 
-- [NPM Package](https://www.npmjs.com/package/@wilsonyiyi/git-helper)
+- [NPM Package](https://www.npmjs.com/package/@wilson_janet/git-helper)
 - [GitHub Repository](https://github.com/wilson/git-helper)
 - [Issues](https://github.com/wilson/git-helper/issues)
 - [Release Notes](https://github.com/wilson/git-helper/releases)

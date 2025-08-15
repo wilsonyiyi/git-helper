@@ -71,6 +71,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 链接
 
-- [NPM Package](https://www.npmjs.com/package/@wilsonyiyi/git-helper)
-- [GitHub Repository](https://github.com/wilson/git-helper)
-- [Issues](https://github.com/wilson/git-helper/issues)
+- [NPM Package](https://www.npmjs.com/package/@wilson_janet/git-helper)
+- [GitHub Repository](https://github.com/wilsonyiyi/git-helper)
+- [Issues](https://github.com/wilsonyiyi/git-helper/issues)
