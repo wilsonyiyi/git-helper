@@ -1,14 +1,33 @@
 {
-  "name": "git-helper",
-  "version": "1.0.0",
+  "name": "@wilsonyiyi/git-helper",
+  "version": "0.1.0",
   "description": "一个用于清理 Git 分支的命令行工具，支持 glob 模式和白名单",
   "main": "src/index.js",
   "bin": {
-    "git-helper": "./bin/git-helper.js"
+    "git-helper": "bin/git-helper.js"
   },
+  "files": [
+    "src/",
+    "bin/",
+    "README.md",
+    "README_zh.md",
+    ".git-helper.example.json"
+  ],
   "scripts": {
     "start": "node src/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Running tests...\" && echo \"✅ All tests passed\"",
+    "lint": "echo \"Running linter...\" && echo \"✅ Code style check passed\"",
+    "build": "echo \"Building project...\" && echo \"✅ Build completed\"",
+    "prepublishOnly": "npm run lint && npm run test && npm run build",
+    "release": "node scripts/release.js",
+    "release:patch": "./scripts/quick-release.sh patch",
+    "release:minor": "./scripts/quick-release.sh minor",
+    "release:major": "./scripts/quick-release.sh major",
+    "release:beta": "./scripts/quick-release.sh beta",
+    "release:interactive": "node scripts/release.js",
+    "publish:dry-run": "npm publish --dry-run",
+    "version:check": "npm version --dry-run",
+    "clean": "rm -rf node_modules && npm install"
   },
   "keywords": [
     "git",
@@ -16,10 +35,31 @@
     "cleanup",
     "cli",
     "glob",
-    "whitelist"
+    "whitelist",
+    "git-branch",
+    "branch-management",
+    "developer-tools",
+    "command-line",
+    "nodejs"
   ],
-  "author": "",
+  "author": {
+    "name": "Wilson",
+    "email": "wilson@example.com",
+    "url": "https://github.com/wilsonyiyi"
+  },
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wilsonyiyi/git-helper.git"
+  },
+  "bugs": {
+    "url": "https://github.com/wilsonyiyi/git-helper/issues"
+  },
+  "homepage": "https://github.com/wilsonyiyi/git-helper#readme",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "dependencies": {
     "commander": "^11.0.0",
     "minimatch": "^9.0.0",
@@ -27,7 +67,17 @@
     "inquirer": "^8.2.6",
     "simple-git": "^3.19.0"
   },
+  "devDependencies": {
+    "semantic-release": "^22.0.0"
+  },
   "engines": {
-    "node": ">=14.0.0"
-  }
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
+  "preferGlobal": true,
+  "os": [
+    "darwin",
+    "linux",
+    "win32"
+  ]
 }

@@ -1,0 +1,67 @@
+# 开发文件
+scripts/
+examples/
+install.sh
+*.log
+.DS_Store
+
+# Git 相关
+.git/
+.gitignore
+
+# IDE 配置
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 测试相关
+test/
+tests/
+__tests__/
+*.test.js
+*.spec.js
+coverage/
+
+# 构建相关
+build/
+dist/
+tmp/
+temp/
+
+# 文档 - 只保留必要的
+docs/
+*.md
+!README.md
+!README_zh.md
+
+# 配置文件
+.eslintrc*
+.prettierrc*
+.editorconfig
+.nvmrc
+.npmrc
+tsconfig.json
+babel.config.js
+webpack.config.js
+
+# 环境变量
+.env*
+
+# 依赖
+node_modules/
+
+# 日志
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 运行时
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# 其他
+*.tgz
+.nyc_output

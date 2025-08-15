@@ -16,16 +16,24 @@
 ### 全局安装
 
 ```bash
-npm install -g git-helper
+npm install -g @wilsonyiyi/git-helper
 ```
 
 ### 本地开发
 
 ```bash
-git clone <repository>
+git clone https://github.com/wilson/git-helper.git
 cd git-helper
 npm install
 npm link  # 创建全局链接
+```
+
+### 从源码安装
+
+```bash
+git clone https://github.com/wilson/git-helper.git
+cd git-helper
+./install.sh
 ```
 
 ## 快速开始
@@ -193,12 +201,59 @@ npm run start
 
 # 运行测试
 npm test
+
+# 代码检查
+npm run lint
+
+# 构建项目
+npm run build
 ```
+
+## 发布
+
+### 快速发布
+
+```bash
+# 补丁版本 (bug 修复)
+npm run release:patch
+
+# 小版本 (新功能)
+npm run release:minor
+
+# 大版本 (破坏性更改)
+npm run release:major
+
+# 测试版本
+npm run release:beta
+```
+
+### 交互式发布
+
+```bash
+npm run release
+```
+
+更多发布信息请查看 [RELEASE.md](./RELEASE.md)
 
 ## 贡献
 
 欢迎提交 Issue 和 Pull Request！
 
+### 贡献流程
+
+1. Fork 本仓库
+2. 创建特性分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
+4. 推送到分支 (`git push origin feature/AmazingFeature`)
+5. 开启 Pull Request
+
 ## 许可证
 
 MIT License
+
+## 链接
+
+- [NPM Package](https://www.npmjs.com/package/@wilsonyiyi/git-helper)
+- [GitHub Repository](https://github.com/wilson/git-helper)
+- [Issues](https://github.com/wilson/git-helper/issues)
+- [Release Notes](https://github.com/wilson/git-helper/releases)
