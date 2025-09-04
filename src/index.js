@@ -2,6 +2,6 @@
 
 const CLI = require('./cli');
 
-// 创建并运行 CLI
+// Create and run CLI
 const cli = new CLI();
 cli.run();

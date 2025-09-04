@@ -8,19 +8,19 @@ class GitOperations {
   }
 
   /**
-   * 获取所有本地分支
+   * Get all local branches
    */
   async getLocalBranches() {
     try {
       const summary = await this.git.branchLocal();
       return summary.all.filter(branch => branch !== 'HEAD');
     } catch (error) {
-      throw new Error(`获取本地分支失败: ${error.message}`);
+      throw new Error(`Failed to get local branches: ${error.message}`);
     }
   }
 
   /**
-   * 获取所有远程分支
+   * Get all remote branches
    */
   async getRemoteBranches() {
     try {
@@ -29,30 +29,37 @@ class GitOperations {
         .filter(branch => branch !== 'HEAD')
         .map(branch => branch.replace(/^origin\//, ''));
     } catch (error) {
-      throw new Error(`获取远程分支失败: ${error.message}`);
+      throw new Error(`Failed to get remote branches: ${error.message}`);
     }
   }
 
   /**
-   * 根据 glob 模式和白名单过滤分支
+   * Filter branches by glob patterns, whitelist, and exclusion patterns
    */
-  filterBranches(branches, patterns, whitelist = []) {
+  filterBranches(branches, patterns, whitelist = [], exclude = []) {
     if (!patterns || patterns.length === 0) {
       return [];
     }
 
     let matchedBranches = [];
 
-    // 应用 glob 模式匹配
+    // Apply glob pattern matching
     for (const pattern of patterns) {
       const matched = branches.filter(branch => minimatch(branch, pattern));
       matchedBranches = [...new Set([...matchedBranches, ...matched])];
     }
 
-    // 应用白名单过滤
+    // Apply whitelist filtering
     if (whitelist && whitelist.length > 0) {
       matchedBranches = matchedBranches.filter(branch => {
         return !whitelist.some(whitePattern => minimatch(branch, whitePattern));
+      });
+    }
+
+    // Apply exclusion pattern filtering
+    if (exclude && exclude.length > 0) {
+      matchedBranches = matchedBranches.filter(branch => {
+        return !exclude.some(excludePattern => minimatch(branch, excludePattern));
       });
     }
 
@@ -60,7 +67,7 @@ class GitOperations {
   }
 
   /**
-   * 删除本地分支
+   * Delete local branches
    */
   async deleteLocalBranches(branches, force = false) {
     const results = [];
@@ -68,12 +75,12 @@ class GitOperations {
 
     for (const branch of branches) {
       try {
-        // 不能删除当前分支
+        // Cannot delete current branch
         if (branch === currentBranch) {
           results.push({
             branch,
             success: false,
-            error: '不能删除当前分支'
+            error: 'Cannot delete current branch'
           });
           continue;
         }
@@ -100,15 +107,15 @@ class GitOperations {
   }
 
   /**
-   * 删除远程分支
+   * Delete remote branches
    */
   async deleteRemoteBranches(branches, remote = 'origin') {
     const results = [];
 
-    // 检查远程仓库是否存在
+    // Check if remote repository exists
     const remotes = await this.getRemotes();
     if (!remotes.includes(remote)) {
-      throw new Error(`远程仓库 '${remote}' 不存在`);
+      throw new Error(`Remote repository '${remote}' does not exist`);
     }
 
     for (const branch of branches) {
@@ -121,13 +128,13 @@ class GitOperations {
       } catch (error) {
         let errorMessage = error.message;
         
-        // 提供更友好的错误信息
+        // Provide more friendly error messages
         if (error.message.includes('does not exist')) {
-          errorMessage = '分支不存在';
+          errorMessage = 'Branch does not exist';
         } else if (error.message.includes('permission denied') || error.message.includes('forbidden')) {
-          errorMessage = '权限不足';
+          errorMessage = 'Insufficient permissions';
         } else if (error.message.includes('network') || error.message.includes('connection')) {
-          errorMessage = '网络连接失败';
+          errorMessage = 'Network connection failed';
         }
         
         results.push({
@@ -142,19 +149,19 @@ class GitOperations {
   }
 
   /**
-   * 获取当前分支
+   * Get current branch
    */
   async getCurrentBranch() {
     try {
       const summary = await this.git.branchLocal();
       return summary.current;
     } catch (error) {
-      throw new Error(`获取当前分支失败: ${error.message}`);
+      throw new Error(`Failed to get current branch: ${error.message}`);
     }
   }
 
   /**
-   * 检查是否在 git 仓库中
+   * Check if in git repository
    */
   async isGitRepository() {
     try {
@@ -166,24 +173,25 @@ class GitOperations {
   }
 
   /**
-   * 获取所有远程仓库
+   * Get all remote repositories
    */
   async getRemotes() {
     try {
       const remotes = await this.git.getRemotes(true);
       return remotes.map(remote => remote.name);
     } catch (error) {
-      throw new Error(`获取远程仓库失败: ${error.message}`);
+      throw new Error(`Failed to get remote repositories: ${error.message}`);
     }
   }
 
   /**
-   * 预览将要删除的分支
+   * Preview branches to be deleted
    */
   async previewDeletion(config) {
     const {
       patterns,
       whitelist,
+      exclude,
       includeLocal,
       includeRemote,
       remote
@@ -196,12 +204,12 @@ class GitOperations {
 
     if (includeLocal) {
       const localBranches = await this.getLocalBranches();
-      preview.local = this.filterBranches(localBranches, patterns, whitelist);
+      preview.local = this.filterBranches(localBranches, patterns, whitelist, exclude);
     }
 
     if (includeRemote) {
       const remoteBranches = await this.getRemoteBranches();
-      preview.remote = this.filterBranches(remoteBranches, patterns, whitelist);
+      preview.remote = this.filterBranches(remoteBranches, patterns, whitelist, exclude);
     }
 
     return preview;

@@ -1,34 +1,34 @@
-# Git Helper
+# Git Cleaner
 
-一个强大的 Git 分支清理命令行工具，支持 glob 模式匹配和白名单功能。
+A powerful command-line tool for cleaning up Git branches with glob pattern matching and whitelist functionality.
 
-## 功能特性
+## Features
 
-- 🔍 支持 glob 模式匹配分支名称
-- 🛡️ 白名单保护重要分支
-- 🌍 支持本地和远程分支清理
-- 🔒 安全预览模式
-- ⚙️ 灵活的配置管理
-- 🎨 美观的命令行界面
+- 🔍 Support glob pattern matching for branch names
+- 🛡️ Whitelist protection for important branches
+- 🌍 Support both local and remote branch cleanup
+- 🔒 Safe preview mode
+- ⚙️ Flexible configuration management
+- 🎨 Beautiful command-line interface
 
-## 安装
+## Installation
 
-### 全局安装
+### Global Installation
 
 ```bash
 npm install -g @wilson_janet/git-cleaner
 ```
 
-### 本地开发
+### Local Development
 
 ```bash
 git clone https://github.com/wilson/git-cleaner.git
 cd git-cleaner
 npm install
-npm link  # 创建全局链接
+npm link  # Create global symlink
 ```
 
-### 从源码安装
+### Install from Source
 
 ```bash
 git clone https://github.com/wilson/git-cleaner.git
@@ -36,87 +36,88 @@ cd git-cleaner
 ./install.sh
 ```
 
-## 快速开始
+## Quick Start
 
-### 基本用法
+### Basic Usage
 
 ```bash
-# 预览要删除的分支
+# Preview branches to be deleted
 git-cleaner clean --patterns "feature/*" --local --dry-run
 
-# 删除本地的 feature 分支
+# Delete local feature branches
 git-cleaner clean --patterns "feature/*" --local
 
-# 删除远程的 feature 和 hotfix 分支
+# Delete remote feature and hotfix branches
 git-cleaner clean --patterns "feature/*" "hotfix/*" --remote
 
-# 使用白名单保护重要分支
+# Use whitelist to protect important branches
 git-cleaner clean --patterns "*" --whitelist "main" "develop" --local
 ```
 
-## 命令详解
+## Commands
 
-### clean 命令
+### clean command
 
-清理匹配的 Git 分支
+Clean matching Git branches
 
 ```bash
-git-cleaner clean [选项]
+git-cleaner clean [options]
 ```
 
-#### 选项
+#### Options
 
-| 选项 | 描述 | 示例 |
-|------|------|------|
-| `-p, --patterns <patterns...>` | 分支名称的 glob 模式 | `-p "feature/*" "hotfix/*"` |
-| `-w, --whitelist <whitelist...>` | 白名单模式，匹配的分支不会被删除 | `-w "main" "develop"` |
-| `-l, --local` | 清理本地分支 | `-l` |
-| `-r, --remote` | 清理远程分支 | `-r` |
-| `--remote-name <name>` | 远程仓库名称，默认为 origin | `--remote-name upstream` |
-| `-f, --force` | 强制删除分支（仅本地分支） | `-f` |
-| `--dry-run` | 预览模式，不实际删除 | `--dry-run` |
-| `-y, --yes` | 自动确认，不显示交互提示 | `-y` |
+| Option | Description | Example |
+|--------|-------------|---------|
+| `-p, --patterns <patterns...>` | Glob patterns for branch names | `-p "feature/*" "hotfix/*"` |
+| `-w, --whitelist <whitelist...>` | Whitelist patterns, matching branches won't be deleted | `-w "main" "develop"` |
+| `-e, --exclude <patterns...>` | Temporary exclusion patterns | `-e "feature/important*" "temp-*"` |
+| `-l, --local` | Clean local branches | `-l` |
+| `-r, --remote` | Clean remote branches | `-r` |
+| `--remote-name <name>` | Remote repository name, default is origin | `--remote-name upstream` |
+| `-f, --force` | Force delete branches (local only) | `-f` |
+| `--dry-run` | Preview mode, show branches to be deleted without actually deleting | `--dry-run` |
+| `-y, --yes` | Auto-confirm, don't show interactive prompts | `-y` |
 
-### preview 命令
+### preview command
 
-预览将要删除的分支
+Preview branches that will be deleted
 
 ```bash
 git-cleaner preview --patterns "feature/*" --local --remote
 ```
 
-### config 命令
+### config command
 
-管理配置文件
+Manage configuration
 
 ```bash
-# 初始化配置文件
+# Initialize configuration file
 git-cleaner config --init
 
-# 设置默认模式
+# Set default patterns
 git-cleaner config --set defaultPatterns "feature/*,hotfix/*"
 git-cleaner config --set defaultWhitelist "main,develop"
 
-# 查看配置
+# View configuration
 git-cleaner config --list
 git-cleaner config --get defaultPatterns
 ```
 
-## Glob 模式示例
+## Glob Pattern Examples
 
-| 模式 | 匹配示例 | 说明 |
-|------|----------|------|
-| `feature/*` | feature/login, feature/payment | 匹配 feature/ 下的所有分支 |
-| `*fix*` | bugfix/123, hotfix/login | 匹配包含 fix 的分支 |
-| `release-*` | release-1.0, release-2.0 | 匹配以 release- 开头的分支 |
-| `user-*-temp` | user-john-temp, user-jane-temp | 匹配特定格式的临时分支 |
-| `*/cleanup` | feature/cleanup, bugfix/cleanup | 匹配以 /cleanup 结尾的分支 |
+| Pattern | Match Examples | Description |
+|---------|----------------|-------------|
+| `feature/*` | feature/login, feature/payment | Match all branches under feature/ |
+| `*fix*` | bugfix/123, hotfix/login | Match branches containing fix |
+| `release-*` | release-1.0, release-2.0 | Match branches starting with release- |
+| `user-*-temp` | user-john-temp, user-jane-temp | Match temporary branches in specific format |
+| `*/cleanup` | feature/cleanup, bugfix/cleanup | Match branches ending with /cleanup |
 
-## 配置文件
+## Configuration
 
-### 全局配置
+### Global Configuration
 
-位置：`~/.git-cleaner/config.json`
+Location: `~/.git-cleaner/config.json`
 
 ```json
 {
@@ -128,9 +129,9 @@ git-cleaner config --get defaultPatterns
 }
 ```
 
-### 项目配置
+### Project Configuration
 
-在项目根目录创建 `.git-cleaner.json`：
+Create `.git-cleaner.json` in project root:
 
 ```json
 {
@@ -140,118 +141,122 @@ git-cleaner config --get defaultPatterns
 }
 ```
 
-项目配置会覆盖全局配置。
+Project configuration overrides global configuration.
 
-## 使用场景
+## Use Cases
 
-### 场景 1：清理功能分支
+### Scenario 1: Clean feature branches
 
-开发完成后清理本地和远程的功能分支：
+Clean up local and remote feature branches after development:
 
 ```bash
-git-cleaner clean -p "feature/*" -l -r --dry-run  # 先预览
-git-cleaner clean -p "feature/*" -l -r -y         # 确认后执行
+git-cleaner clean -p "feature/*" -l -r --dry-run  # Preview first
+git-cleaner clean -p "feature/*" -l -r -y         # Execute after confirmation
 ```
 
-### 场景 2：批量清理多种类型分支
+### Scenario 2: Batch clean multiple branch types
 
 ```bash
 git-cleaner clean -p "feature/*" "hotfix/*" "bugfix/*" -w "main" "develop" -l
 ```
 
-### 场景 3：清理个人临时分支
+### Scenario 3: Clean personal temporary branches
 
 ```bash
 git-cleaner clean -p "temp-*" "*-wip" "*-backup" -l -f
 ```
 
-### 场景 4：定期清理
+### Scenario 4: Regular cleanup
 
-结合 cron 或 GitHub Actions 定期清理：
+Combine with cron or GitHub Actions for regular cleanup:
 
 ```bash
-# 每周清理已合并的功能分支
+# Weekly cleanup of merged feature branches
 git-cleaner clean -p "feature/*" -r -y
 ```
 
-## 安全特性
+## Safety Features
 
-1. **当前分支保护**：不能删除当前所在分支
-2. **白名单保护**：重要分支（如 main、develop）默认受保护
-3. **预览模式**：`--dry-run` 让你安全地查看将要删除的分支
-4. **交互确认**：默认需要用户确认才会执行删除操作
-5. **详细反馈**：显示每个分支的删除结果和错误信息
+1. **Current branch protection**: Cannot delete the current branch
+2. **Whitelist protection**: Important branches (main, develop) are protected by default
+3. **Preview mode**: `--dry-run` lets you safely preview branches to be deleted
+4. **Interactive confirmation**: Default requires user confirmation before deletion
+5. **Detailed feedback**: Shows deletion results and error information for each branch
 
-## 错误处理
+## Error Handling
 
-- 非 Git 仓库检测
-- 网络连接问题（远程分支操作）
-- 权限问题
-- 分支不存在
-- 未推送的本地更改警告
+- Non-Git repository detection
+- Network connection issues (remote branch operations)
+- Permission issues
+- Branch doesn't exist
+- Unpushed local changes warning
 
-## 开发
+## Development
 
 ```bash
-# 安装依赖
+# Install dependencies
 npm install
 
-# 开发模式
+# Development mode
 npm run start
 
-# 运行测试
+# Run tests
 npm test
 
-# 代码检查
+# Lint code
 npm run lint
 
-# 构建项目
+# Build project
 npm run build
 ```
 
-## 发布
+## Publishing
 
-### 快速发布
+### Quick Release
 
 ```bash
-# 补丁版本 (bug 修复)
+# Patch version (bug fixes)
 npm run release:patch
 
-# 小版本 (新功能)
+# Minor version (new features)
 npm run release:minor
 
-# 大版本 (破坏性更改)
+# Major version (breaking changes)
 npm run release:major
 
-# 测试版本
+# Beta version
 npm run release:beta
 ```
 
-### 交互式发布
+### Interactive Release
 
 ```bash
 npm run release
 ```
 
-更多发布信息请查看 [RELEASE.md](./RELEASE.md)
+For more release information, see [RELEASE.md](./RELEASE.md)
 
-## 贡献
+## Chinese Documentation
 
-欢迎提交 Issue 和 Pull Request！
+For Chinese documentation, please see [README_zh.md](./README_zh.md)
 
-### 贡献流程
+## Contributing
 
-1. Fork 本仓库
-2. 创建特性分支 (`git checkout -b feature/AmazingFeature`)
-3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
-4. 推送到分支 (`git push origin feature/AmazingFeature`)
-5. 开启 Pull Request
+Issues and Pull Requests are welcome!
 
-## 许可证
+### Contribution Process
+
+1. Fork this repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## License
 
 MIT License
 
-## 链接
+## Links
 
 - [NPM Package](https://www.npmjs.com/package/@wilson_janet/git-cleaner)
 - [GitHub Repository](https://github.com/wilson/git-cleaner)

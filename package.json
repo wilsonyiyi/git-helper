@@ -1,7 +1,7 @@
 {
   "name": "@wilson_janet/git-cleaner",
   "version": "0.1.3",
-  "description": "一个用于清理 Git 分支的命令行工具，支持 glob 模式和白名单",
+  "description": "A command-line tool for cleaning Git branches with glob pattern and whitelist support",
   "main": "src/index.js",
   "bin": {
     "git-cleaner": "bin/git-cleaner.js"
@@ -40,7 +40,9 @@
     "branch-management",
     "developer-tools",
     "command-line",
-    "nodejs"
+    "nodejs",
+    "git-cleaner",
+    "branch-cleanup"
   ],
   "author": {
     "name": "Wilson",

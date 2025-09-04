@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Git Helper is a command-line tool for cleaning up Git branches using glob patterns and whitelist functionality. It supports both local and remote branch management with safety features like dry-run mode and interactive confirmation.
+Git Cleaner is a command-line tool for cleaning up Git branches using glob patterns and whitelist functionality. It supports both local and remote branch management with safety features like dry-run mode and interactive confirmation. The project prioritizes English documentation and interface while providing Chinese documentation as a secondary option.
 
 ## Development Commands
 
@@ -30,7 +30,7 @@ npm run clean              # Clean and reinstall dependencies
 
 ### Core Components
 
-- **CLI (`src/cli.js`)**: Command-line interface using Commander.js, handles user interactions and command parsing
+- **CLI (`src/cli.js`)**: Command-line interface using Commander.js, handles user interactions and command parsing (English-first)
 - **GitOperations (`src/git-operations.js`)**: Git operations using simple-git, handles branch filtering, deletion, and preview
 - **ConfigManager (`src/config-manager.js`)**: Configuration management with global (`~/.git-cleaner/config.json`) and project-level (`.git-cleaner.json`) support
 
@@ -46,6 +46,12 @@ The tool supports hierarchical configuration:
 1. **Global config**: `~/.git-cleaner/config.json`
 2. **Project config**: `.git-cleaner.json` in project root
 3. **Command-line args**: Override config file settings
+
+### Language Priority
+
+- **Primary**: English (CLI interface, README.md, documentation)
+- **Secondary**: Chinese (README_zh.md for Chinese users)
+- **Code comments**: Mix of English and Chinese (transitioning to English)
 
 Default configuration includes:
 
@@ -82,3 +88,5 @@ Default configuration includes:
 - Supports both local and remote branch operations
 - Extensive error handling for network and permission issues
 - Configuration values are merged from global → project → command-line args
+- Language priority: English-first with Chinese documentation support
+- New exclusion patterns feature (`-e, --exclude`) for temporary branch protection

@@ -15,7 +15,7 @@ class CLI {
   }
 
   /**
-   * 从 package.json 获取版本号
+   * Get version from package.json
    */
   getVersion() {
     try {
@@ -23,53 +23,55 @@ class CLI {
       const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
       return packageJson.version;
     } catch (error) {
-      console.warn(chalk.yellow(`警告: 无法读取版本号: ${error.message}`));
-      return '未知版本';
+      console.warn(chalk.yellow(`Warning: Failed to read version number: ${error.message}`));
+      return 'Unknown version';
     }
   }
 
   setupCommands() {
     this.program
       .name('git-cleaner')
-      .description('Git 分支清理工具 - 支持 glob 模式和白名单')
+      .description('Git branch cleanup tool with glob patterns and whitelist support')
       .version(this.getVersion());
 
-    // 清理分支命令
+    // Clean branches command
     this.program
       .command('clean')
-      .description('清理匹配的 Git 分支')
-      .option('-p, --patterns <patterns...>', '分支名称的 glob 模式 (例如: "feature/*" "hotfix/*")')
-      .option('-w, --whitelist <whitelist...>', '白名单模式，匹配的分支不会被删除')
-      .option('-l, --local', '清理本地分支', false)
-      .option('-r, --remote', '清理远程分支', false)
-      .option('--remote-name <name>', '远程仓库名称', 'origin')
-      .option('-f, --force', '强制删除分支（本地分支）', false)
-      .option('--dry-run', '预览模式，显示将要删除的分支但不实际删除', false)
-      .option('-y, --yes', '自动确认，不显示交互式提示', false)
+      .description('Clean matching Git branches')
+      .option('-p, --patterns <patterns...>', 'Glob patterns for branch names (e.g., "feature/*" "hotfix/*")')
+      .option('-w, --whitelist <whitelist...>', 'Whitelist patterns, matching branches won\'t be deleted')
+      .option('-e, --exclude <patterns...>', 'Temporary exclusion patterns (e.g., "feature/important*" "temp-*")')
+      .option('-l, --local', 'Clean local branches', false)
+      .option('-r, --remote', 'Clean remote branches', false)
+      .option('--remote-name <name>', 'Remote repository name', 'origin')
+      .option('-f, --force', 'Force delete branches (local only)', false)
+      .option('--dry-run', 'Preview mode, show branches to be deleted without actually deleting', false)
+      .option('-y, --yes', 'Auto-confirm, don\'t show interactive prompts', false)
       .action(async (options) => {
         await this.handleCleanCommand(options);
       });
 
-    // 配置命令
+    // Config command
     this.program
       .command('config')
-      .description('管理配置')
-      .option('--set <items...>', '设置配置项 (格式: key value)')
-      .option('--get <key>', '获取配置项')
-      .option('--list', '列出所有配置')
-      .option('--init', '初始化配置文件')
+      .description('Manage configuration')
+      .option('--set <items...>', 'Set configuration items (format: key value)')
+      .option('--get <key>', 'Get configuration item')
+      .option('--list', 'List all configuration')
+      .option('--init', 'Initialize configuration file')
       .action(async (options) => {
         await this.handleConfigCommand(options);
       });
 
-    // 预览命令
+    // Preview command
     this.program
       .command('preview')
-      .description('预览将要删除的分支')
-      .option('-p, --patterns <patterns...>', '分支名称的 glob 模式')
-      .option('-w, --whitelist <whitelist...>', '白名单模式')
-      .option('-l, --local', '包含本地分支', false)
-      .option('-r, --remote', '包含远程分支', false)
+      .description('Preview branches to be deleted')
+      .option('-p, --patterns <patterns...>', 'Glob patterns for branch names')
+      .option('-w, --whitelist <whitelist...>', 'Whitelist patterns')
+      .option('-e, --exclude <patterns...>', 'Temporary exclusion patterns')
+      .option('-l, --local', 'Include local branches', false)
+      .option('-r, --remote', 'Include remote branches', false)
       .action(async (options) => {
         await this.handlePreviewCommand(options);
       });
@@ -77,75 +79,76 @@ class CLI {
 
   async handleCleanCommand(options) {
     try {
-      // 检查是否在 git 仓库中
+      // Check if in git repository
       if (!(await this.gitOps.isGitRepository())) {
-        console.log(chalk.red('❌ 当前目录不是 Git 仓库'));
+        console.log(chalk.red('❌ Current directory is not a Git repository'));
         process.exit(1);
       }
 
-      // 获取合并后的配置
+      // Get merged configuration
       const config = this.configManager.getMergedConfig();
       
-      // 合并命令行参数和配置默认值
+      // Merge command line arguments with configuration defaults
       const finalOptions = this.mergeOptionsWithConfig(options, config);
 
-      // 验证参数
+      // Validate parameters
       if (!finalOptions.patterns || finalOptions.patterns.length === 0) {
-        console.log(chalk.yellow('⚠️  请提供至少一个 glob 模式或者配置 defaultPatterns'));
-        console.log(chalk.gray('例如: git-cleaner clean -p "feature/*" -l'));
-        console.log(chalk.gray('或者: git-cleaner config --set defaultPatterns "feature/*,hotfix/*"'));
+        console.log(chalk.yellow('⚠️  Please provide at least one glob pattern or configure defaultPatterns'));
+        console.log(chalk.gray('Example: git-cleaner clean -p "feature/*" -l'));
+        console.log(chalk.gray('Or: git-cleaner config --set defaultPatterns "feature/*,hotfix/*"'));
         process.exit(1);
       }
 
       if (!finalOptions.local && !finalOptions.remote) {
-        console.log(chalk.yellow('⚠️  请指定要清理本地分支 (-l) 或远程分支 (-r)'));
+        console.log(chalk.yellow('⚠️  Please specify to clean local branches (-l) or remote branches (-r)'));
         process.exit(1);
       }
 
-      // 预览将要删除的分支
+      // Preview branches to be deleted
       const preview = await this.gitOps.previewDeletion({
         patterns: finalOptions.patterns,
         whitelist: finalOptions.whitelist,
+        exclude: finalOptions.exclude,
         includeLocal: finalOptions.local,
         includeRemote: finalOptions.remote,
         remote: finalOptions.remoteName
       });
 
-      // 显示预览
+      // Show preview
       this.displayPreview(preview, finalOptions);
 
       if (preview.local.length === 0 && preview.remote.length === 0) {
-        console.log(chalk.green('✅ 没有匹配的分支需要删除'));
+        console.log(chalk.green('✅ No matching branches to delete'));
         return;
       }
 
-      // 如果是预览模式，直接返回
+      // If preview mode, return directly
       if (finalOptions.dryRun) {
-        console.log(chalk.blue('\n🔍 这是预览模式，没有实际删除任何分支'));
+        console.log(chalk.blue('\n🔍 This is preview mode, no branches were actually deleted'));
         return;
       }
 
-      // 确认删除
+      // Confirm deletion
       if (!finalOptions.yes) {
         const prompt = new Confirm({
           name: 'confirmed',
-          message: '确定要删除这些分支吗？',
+          message: 'Are you sure you want to delete these branches?',
           initial: false
         });
 
         const confirmed = await prompt.run();
 
         if (!confirmed) {
-          console.log(chalk.yellow('已取消操作'));
+          console.log(chalk.yellow('Operation cancelled'));
           return;
         }
       }
 
-      // 执行删除
+      // Execute deletion
       await this.executeDeletion(preview, finalOptions);
 
     } catch (error) {
-      console.log(chalk.red(`❌ 错误: ${error.message}`));
+      console.log(chalk.red(`❌ Error: ${error.message}`));
       process.exit(1);
     }
   }
@@ -153,20 +156,20 @@ class CLI {
   async handlePreviewCommand(options) {
     try {
       if (!(await this.gitOps.isGitRepository())) {
-        console.log(chalk.red('❌ 当前目录不是 Git 仓库'));
+        console.log(chalk.red('❌ Current directory is not a Git repository'));
         process.exit(1);
       }
 
-      // 获取合并后的配置
+      // Get merged configuration
       const config = this.configManager.getMergedConfig();
       
-      // 合并命令行参数和配置默认值
+      // Merge command line arguments with configuration defaults
       const finalOptions = this.mergeOptionsWithConfig(options, config);
 
       if (!finalOptions.patterns || finalOptions.patterns.length === 0) {
-        console.log(chalk.yellow('⚠️  请提供至少一个 glob 模式或者配置 defaultPatterns'));
-        console.log(chalk.gray('例如: git-cleaner preview -p "feature/*" -l'));
-        console.log(chalk.gray('或者: git-cleaner config --set defaultPatterns "feature/*,hotfix/*"'));
+        console.log(chalk.yellow('⚠️  Please provide at least one glob pattern or configure defaultPatterns'));
+        console.log(chalk.gray('Example: git-cleaner preview -p "feature/*" -l'));
+        console.log(chalk.gray('Or: git-cleaner config --set defaultPatterns "feature/*,hotfix/*"'));
         process.exit(1);
       }
 
@@ -179,7 +182,7 @@ class CLI {
 
       this.displayPreview(preview, finalOptions);
     } catch (error) {
-      console.log(chalk.red(`❌ 错误: ${error.message}`));
+      console.log(chalk.red(`❌ Error: ${error.message}`));
       process.exit(1);
     }
   }
@@ -208,44 +211,44 @@ class CLI {
         return;
       }
 
-      // 如果没有指定具体操作，显示帮助
-      console.log(chalk.yellow('请指定配置操作:'));
-      console.log(chalk.gray('  --init          初始化配置文件'));
-      console.log(chalk.gray('  --set <key> <value>  设置配置项'));
-      console.log(chalk.gray('  --get <key>     获取配置项'));
-      console.log(chalk.gray('  --list          列出所有配置'));
+      // If no specific operation is specified, show help
+      console.log(chalk.yellow('Please specify configuration operation:'));
+      console.log(chalk.gray('  --init          Initialize configuration file'));
+      console.log(chalk.gray('  --set <key> <value>  Set configuration item'));
+      console.log(chalk.gray('  --get <key>     Get configuration item'));
+      console.log(chalk.gray('  --list          List all configuration'));
     } catch (error) {
-      console.log(chalk.red(`❌ 配置操作失败: ${error.message}`));
+      console.log(chalk.red(`❌ Configuration operation failed: ${error.message}`));
     }
   }
 
   displayPreview(preview, options) {
-    console.log(chalk.bold('\n📋 匹配的分支预览:'));
+    console.log(chalk.bold('\n📋 Matching branches preview:'));
     
     if (options.local && preview.local.length > 0) {
-      console.log(chalk.blue('\n🔹 本地分支:'));
+      console.log(chalk.blue('\n🔹 Local branches:'));
       preview.local.forEach(branch => {
         console.log(chalk.gray(`  - ${branch}`));
       });
     }
 
     if (options.remote && preview.remote.length > 0) {
-      console.log(chalk.blue('\n🔹 远程分支:'));
+      console.log(chalk.blue('\n🔹 Remote branches:'));
       preview.remote.forEach(branch => {
         console.log(chalk.gray(`  - ${branch}`));
       });
     }
 
     const totalCount = preview.local.length + preview.remote.length;
-    console.log(chalk.bold(`\n📊 总计: ${totalCount} 个分支`));
+    console.log(chalk.bold(`\n📊 Total: ${totalCount} branches`));
   }
 
   async executeDeletion(preview, options) {
-    console.log(chalk.blue('\n🗑️  开始删除分支...'));
+    console.log(chalk.blue('\n🗑️  Starting branch deletion...'));
 
-    // 删除本地分支
+    // Delete local branches
     if (options.local && preview.local.length > 0) {
-      console.log(chalk.blue('\n删除本地分支:'));
+      console.log(chalk.blue('\nDeleting local branches:'));
       const results = await this.gitOps.deleteLocalBranches(preview.local, options.force);
       
       results.forEach(result => {
@@ -257,9 +260,9 @@ class CLI {
       });
     }
 
-    // 删除远程分支
+    // Delete remote branches
     if (options.remote && preview.remote.length > 0) {
-      console.log(chalk.blue('\n删除远程分支:'));
+      console.log(chalk.blue('\nDeleting remote branches:'));
       const results = await this.gitOps.deleteRemoteBranches(preview.remote, options.remoteName);
       
       results.forEach(result => {
@@ -271,36 +274,36 @@ class CLI {
       });
     }
 
-    console.log(chalk.green('\n✅ 分支清理完成！'));
+    console.log(chalk.green('\n✅ Branch cleanup completed!'));
   }
 
   /**
-   * 合并命令行选项和配置文件默认值
+   * Merge command line options with configuration file defaults
    */
   mergeOptionsWithConfig(options, config) {
     const finalOptions = { ...options };
 
-    // 如果命令行没有提供 patterns，使用配置中的 defaultPatterns
+    // If command line doesn't provide patterns, use defaultPatterns from config
     if (!finalOptions.patterns || finalOptions.patterns.length === 0) {
       finalOptions.patterns = config.defaultPatterns || [];
     }
 
-    // 如果命令行没有提供 whitelist，使用配置中的 defaultWhitelist
+    // If command line doesn't provide whitelist, use defaultWhitelist from config
     if (!finalOptions.whitelist || finalOptions.whitelist.length === 0) {
       finalOptions.whitelist = config.defaultWhitelist || [];
     }
 
-    // 如果命令行没有提供 remoteName，使用配置中的 defaultRemote
+    // If command line doesn't provide remoteName, use defaultRemote from config
     if (!finalOptions.remoteName) {
       finalOptions.remoteName = config.defaultRemote || 'origin';
     }
 
-    // 如果命令行没有提供 yes，使用配置中的 autoConfirm
+    // If command line doesn't provide yes, use autoConfirm from config
     if (!finalOptions.yes && config.autoConfirm) {
       finalOptions.yes = config.autoConfirm;
     }
 
-    // 如果命令行没有提供 force，使用配置中的 forceDelete
+    // If command line doesn't provide force, use forceDelete from config
     if (!finalOptions.force && config.forceDelete) {
       finalOptions.force = config.forceDelete;
     }

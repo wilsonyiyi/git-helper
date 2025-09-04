@@ -17,7 +17,7 @@ class ConfigManager {
   }
 
   /**
-   * 确保配置目录存在
+   * Ensure configuration directory exists
    */
   ensureConfigDir() {
     if (!fs.existsSync(this.configDir)) {
@@ -26,22 +26,22 @@ class ConfigManager {
   }
 
   /**
-   * 初始化配置文件
+   * Initialize configuration file
    */
   initConfig() {
     this.ensureConfigDir();
     
     if (fs.existsSync(this.configFile)) {
-      console.log(chalk.yellow('配置文件已存在'));
+      console.log(chalk.yellow('Configuration file already exists'));
       return;
     }
 
     fs.writeFileSync(this.configFile, JSON.stringify(this.defaultConfig, null, 2));
-    console.log(chalk.green(`✅ 配置文件已创建: ${this.configFile}`));
+    console.log(chalk.green(`✅ Configuration file created: ${this.configFile}`));
   }
 
   /**
-   * 读取配置
+   * Read configuration
    */
   readConfig() {
     if (!fs.existsSync(this.configFile)) {
@@ -53,13 +53,13 @@ class ConfigManager {
       const config = JSON.parse(configContent);
       return { ...this.defaultConfig, ...config };
     } catch (error) {
-      console.log(chalk.yellow(`配置文件解析失败，使用默认配置: ${error.message}`));
+      console.log(chalk.yellow(`Configuration file parsing failed, using default configuration: ${error.message}`));
       return this.defaultConfig;
     }
   }
 
   /**
-   * 写入配置
+   * Write configuration
    */
   writeConfig(config) {
     this.ensureConfigDir();
@@ -68,25 +68,25 @@ class ConfigManager {
       fs.writeFileSync(this.configFile, JSON.stringify(config, null, 2));
       return true;
     } catch (error) {
-      console.log(chalk.red(`配置文件写入失败: ${error.message}`));
+      console.log(chalk.red(`Failed to write configuration file: ${error.message}`));
       return false;
     }
   }
 
   /**
-   * 设置配置项
+   * Set configuration item
    */
   setConfig(key, value) {
     const config = this.readConfig();
     
-    // 处理数组类型的配置
+    // Handle array type configuration
     if (key === 'defaultPatterns' || key === 'defaultWhitelist') {
       if (typeof value === 'string') {
         value = value.split(',').map(item => item.trim());
       }
     }
 
-    // 处理布尔类型的配置
+    // Handle boolean type configuration
     if (key === 'autoConfirm' || key === 'forceDelete') {
       if (typeof value === 'string') {
         value = value.toLowerCase() === 'true';
@@ -96,12 +96,12 @@ class ConfigManager {
     config[key] = value;
     
     if (this.writeConfig(config)) {
-      console.log(chalk.green(`✅ 配置已更新: ${key} = ${JSON.stringify(value)}`));
+      console.log(chalk.green(`✅ Configuration updated: ${key} = ${JSON.stringify(value)}`));
     }
   }
 
   /**
-   * 获取配置项
+   * Get configuration item
    */
   getConfig(key) {
     const config = this.readConfig();
@@ -116,19 +116,19 @@ class ConfigManager {
   }
 
   /**
-   * 列出所有配置
+   * List all configuration
    */
   listConfig() {
     const config = this.readConfig();
     
-    console.log(chalk.bold('📋 当前配置:'));
+    console.log(chalk.bold('📋 Current configuration:'));
     Object.entries(config).forEach(([key, value]) => {
       console.log(chalk.blue(`  ${key}: ${JSON.stringify(value)}`));
     });
   }
 
   /**
-   * 获取项目级配置
+   * Get project-level configuration
    */
   getProjectConfig() {
     const projectConfigFile = path.join(process.cwd(), '.git-cleaner.json');
@@ -138,7 +138,7 @@ class ConfigManager {
         const configContent = fs.readFileSync(projectConfigFile, 'utf8');
         return JSON.parse(configContent);
       } catch (error) {
-        console.log(chalk.yellow(`项目配置文件解析失败: ${error.message}`));
+        console.log(chalk.yellow(`Project configuration file parsing failed: ${error.message}`));
         return {};
       }
     }
@@ -147,7 +147,7 @@ class ConfigManager {
   }
 
   /**
-   * 合并全局和项目配置
+   * Merge global and project configuration
    */
   getMergedConfig() {
     const globalConfig = this.readConfig();
