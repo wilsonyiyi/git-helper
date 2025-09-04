@@ -40,7 +40,6 @@ class CLI {
       .description('Clean matching Git branches')
       .option('-p, --patterns <patterns...>', 'Glob patterns for branch names (e.g., "feature/*" "hotfix/*")')
       .option('-w, --whitelist <whitelist...>', 'Whitelist patterns, matching branches won\'t be deleted')
-      .option('-e, --exclude <patterns...>', 'Temporary exclusion patterns (e.g., "feature/important*" "temp-*")')
       .option('-l, --local', 'Clean local branches', false)
       .option('-r, --remote', 'Clean remote branches', false)
       .option('--remote-name <name>', 'Remote repository name', 'origin')
@@ -69,7 +68,6 @@ class CLI {
       .description('Preview branches to be deleted')
       .option('-p, --patterns <patterns...>', 'Glob patterns for branch names')
       .option('-w, --whitelist <whitelist...>', 'Whitelist patterns')
-      .option('-e, --exclude <patterns...>', 'Temporary exclusion patterns')
       .option('-l, --local', 'Include local branches', false)
       .option('-r, --remote', 'Include remote branches', false)
       .action(async (options) => {
@@ -108,7 +106,6 @@ class CLI {
       const preview = await this.gitOps.previewDeletion({
         patterns: finalOptions.patterns,
         whitelist: finalOptions.whitelist,
-        exclude: finalOptions.exclude,
         includeLocal: finalOptions.local,
         includeRemote: finalOptions.remote,
         remote: finalOptions.remoteName

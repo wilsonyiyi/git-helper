@@ -89,4 +89,3 @@ Default configuration includes:
 - Extensive error handling for network and permission issues
 - Configuration values are merged from global → project → command-line args
 - Language priority: English-first with Chinese documentation support
-- New exclusion patterns feature (`-e, --exclude`) for temporary branch protection

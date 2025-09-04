@@ -70,7 +70,6 @@ git-cleaner clean [options]
 |--------|-------------|---------|
 | `-p, --patterns <patterns...>` | Glob patterns for branch names | `-p "feature/*" "hotfix/*"` |
 | `-w, --whitelist <whitelist...>` | Whitelist patterns, matching branches won't be deleted | `-w "main" "develop"` |
-| `-e, --exclude <patterns...>` | Temporary exclusion patterns | `-e "feature/important*" "temp-*"` |
 | `-l, --local` | Clean local branches | `-l` |
 | `-r, --remote` | Clean remote branches | `-r` |
 | `--remote-name <name>` | Remote repository name, default is origin | `--remote-name upstream` |

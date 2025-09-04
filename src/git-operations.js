@@ -34,9 +34,9 @@ class GitOperations {
   }
 
   /**
-   * Filter branches by glob patterns, whitelist, and exclusion patterns
+   * Filter branches by glob patterns and whitelist
    */
-  filterBranches(branches, patterns, whitelist = [], exclude = []) {
+  filterBranches(branches, patterns, whitelist = []) {
     if (!patterns || patterns.length === 0) {
       return [];
     }
@@ -53,13 +53,6 @@ class GitOperations {
     if (whitelist && whitelist.length > 0) {
       matchedBranches = matchedBranches.filter(branch => {
         return !whitelist.some(whitePattern => minimatch(branch, whitePattern));
-      });
-    }
-
-    // Apply exclusion pattern filtering
-    if (exclude && exclude.length > 0) {
-      matchedBranches = matchedBranches.filter(branch => {
-        return !exclude.some(excludePattern => minimatch(branch, excludePattern));
       });
     }
 
@@ -191,7 +184,6 @@ class GitOperations {
     const {
       patterns,
       whitelist,
-      exclude,
       includeLocal,
       includeRemote,
       remote
@@ -204,12 +196,12 @@ class GitOperations {
 
     if (includeLocal) {
       const localBranches = await this.getLocalBranches();
-      preview.local = this.filterBranches(localBranches, patterns, whitelist, exclude);
+      preview.local = this.filterBranches(localBranches, patterns, whitelist);
     }
 
     if (includeRemote) {
       const remoteBranches = await this.getRemoteBranches();
-      preview.remote = this.filterBranches(remoteBranches, patterns, whitelist, exclude);
+      preview.remote = this.filterBranches(remoteBranches, patterns, whitelist);
     }
 
     return preview;
