@@ -1,3 +1,5 @@
+[简体中文](./README_zh.md)
+
 # Git Cleaner
 
 A powerful command-line tool for cleaning up Git branches with glob pattern matching and whitelist functionality.
@@ -66,16 +68,16 @@ git-cleaner clean [options]
 
 #### Options
 
-| Option | Description | Example |
-|--------|-------------|---------|
-| `-p, --patterns <patterns...>` | Glob patterns for branch names | `-p "feature/*" "hotfix/*"` |
-| `-w, --whitelist <whitelist...>` | Whitelist patterns, matching branches won't be deleted | `-w "main" "develop"` |
-| `-l, --local` | Clean local branches | `-l` |
-| `-r, --remote` | Clean remote branches | `-r` |
-| `--remote-name <name>` | Remote repository name, default is origin | `--remote-name upstream` |
-| `-f, --force` | Force delete branches (local only) | `-f` |
-| `--dry-run` | Preview mode, show branches to be deleted without actually deleting | `--dry-run` |
-| `-y, --yes` | Auto-confirm, don't show interactive prompts | `-y` |
+| Option                           | Description                                                         | Example                     |
+| -------------------------------- | ------------------------------------------------------------------- | --------------------------- |
+| `-p, --patterns <patterns...>`   | Glob patterns for branch names                                      | `-p "feature/*" "hotfix/*"` |
+| `-w, --whitelist <whitelist...>` | Whitelist patterns, matching branches won't be deleted              | `-w "main" "develop"`       |
+| `-l, --local`                    | Clean local branches                                                | `-l`                        |
+| `-r, --remote`                   | Clean remote branches                                               | `-r`                        |
+| `--remote-name <name>`           | Remote repository name, default is origin                           | `--remote-name upstream`    |
+| `-f, --force`                    | Force delete branches (local only)                                  | `-f`                        |
+| `--dry-run`                      | Preview mode, show branches to be deleted without actually deleting | `--dry-run`                 |
+| `-y, --yes`                      | Auto-confirm, don't show interactive prompts                        | `-y`                        |
 
 ### preview command
 
@@ -104,13 +106,13 @@ git-cleaner config --get defaultPatterns
 
 ## Glob Pattern Examples
 
-| Pattern | Match Examples | Description |
-|---------|----------------|-------------|
-| `feature/*` | feature/login, feature/payment | Match all branches under feature/ |
-| `*fix*` | bugfix/123, hotfix/login | Match branches containing fix |
-| `release-*` | release-1.0, release-2.0 | Match branches starting with release- |
-| `user-*-temp` | user-john-temp, user-jane-temp | Match temporary branches in specific format |
-| `*/cleanup` | feature/cleanup, bugfix/cleanup | Match branches ending with /cleanup |
+| Pattern       | Match Examples                  | Description                                 |
+| ------------- | ------------------------------- | ------------------------------------------- |
+| `feature/*`   | feature/login, feature/payment  | Match all branches under feature/           |
+| `*fix*`       | bugfix/123, hotfix/login        | Match branches containing fix               |
+| `release-*`   | release-1.0, release-2.0        | Match branches starting with release-       |
+| `user-*-temp` | user-john-temp, user-jane-temp  | Match temporary branches in specific format |
+| `*/cleanup`   | feature/cleanup, bugfix/cleanup | Match branches ending with /cleanup         |
 
 ## Configuration
 
