@@ -52,12 +52,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/wilsonyiyi/git-cleaner.git"
+    "url": "git+https://github.com/wilsonyiyi/git-helper.git"
   },
   "bugs": {
-    "url": "https://github.com/wilsonyiyi/git-cleaner/issues"
+    "url": "https://github.com/wilsonyiyi/git-helper/issues"
   },
-  "homepage": "https://github.com/wilsonyiyi/git-cleaner#readme",
+  "homepage": "https://github.com/wilsonyiyi/git-helper#readme",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
