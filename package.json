@@ -1,17 +1,17 @@
 {
-  "name": "@wilson_janet/git-helper",
+  "name": "@wilson_janet/git-cleaner",
   "version": "0.1.3",
   "description": "一个用于清理 Git 分支的命令行工具，支持 glob 模式和白名单",
   "main": "src/index.js",
   "bin": {
-    "git-helper": "bin/git-helper.js"
+    "git-cleaner": "bin/git-cleaner.js"
   },
   "files": [
     "src/",
     "bin/",
     "README.md",
     "README_zh.md",
-    ".git-helper.example.json"
+    ".git-cleaner.example.json"
   ],
   "scripts": {
     "start": "node src/index.js",
@@ -50,12 +50,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/wilsonyiyi/git-helper.git"
+    "url": "git+https://github.com/wilsonyiyi/git-cleaner.git"
   },
   "bugs": {
-    "url": "https://github.com/wilsonyiyi/git-helper/issues"
+    "url": "https://github.com/wilsonyiyi/git-cleaner/issues"
   },
-  "homepage": "https://github.com/wilsonyiyi/git-helper#readme",
+  "homepage": "https://github.com/wilsonyiyi/git-cleaner#readme",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"

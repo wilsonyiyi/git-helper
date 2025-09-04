@@ -45,8 +45,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - 交互式确认
   - 详细错误处理
 - **配置支持**:
-  - 全局配置文件 (`~/.git-helper/config.json`)
-  - 项目配置文件 (`.git-helper.json`)
+  - 全局配置文件 (`~/.git-cleaner/config.json`)
+  - 项目配置文件 (`.git-cleaner.json`)
   - 默认白名单保护
 - **发布工具**:
   - 自动化发布脚本
@@ -71,6 +71,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 链接
 
-- [NPM Package](https://www.npmjs.com/package/@wilson_janet/git-helper)
-- [GitHub Repository](https://github.com/wilsonyiyi/git-helper)
-- [Issues](https://github.com/wilsonyiyi/git-helper/issues)
+- [NPM Package](https://www.npmjs.com/package/@wilson_janet/git-cleaner)
+- [GitHub Repository](https://github.com/wilsonyiyi/git-cleaner)
+- [Issues](https://github.com/wilsonyiyi/git-cleaner/issues)

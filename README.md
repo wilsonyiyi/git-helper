@@ -16,14 +16,14 @@
 ### 全局安装
 
 ```bash
-npm install -g @wilson_janet/git-helper
+npm install -g @wilson_janet/git-cleaner
 ```
 
 ### 本地开发
 
 ```bash
-git clone https://github.com/wilson/git-helper.git
-cd git-helper
+git clone https://github.com/wilson/git-cleaner.git
+cd git-cleaner
 npm install
 npm link  # 创建全局链接
 ```
@@ -31,8 +31,8 @@ npm link  # 创建全局链接
 ### 从源码安装
 
 ```bash
-git clone https://github.com/wilson/git-helper.git
-cd git-helper
+git clone https://github.com/wilson/git-cleaner.git
+cd git-cleaner
 ./install.sh
 ```
 
@@ -42,16 +42,16 @@ cd git-helper
 
 ```bash
 # 预览要删除的分支
-git-helper clean --patterns "feature/*" --local --dry-run
+git-cleaner clean --patterns "feature/*" --local --dry-run
 
 # 删除本地的 feature 分支
-git-helper clean --patterns "feature/*" --local
+git-cleaner clean --patterns "feature/*" --local
 
 # 删除远程的 feature 和 hotfix 分支
-git-helper clean --patterns "feature/*" "hotfix/*" --remote
+git-cleaner clean --patterns "feature/*" "hotfix/*" --remote
 
 # 使用白名单保护重要分支
-git-helper clean --patterns "*" --whitelist "main" "develop" --local
+git-cleaner clean --patterns "*" --whitelist "main" "develop" --local
 ```
 
 ## 命令详解
@@ -61,7 +61,7 @@ git-helper clean --patterns "*" --whitelist "main" "develop" --local
 清理匹配的 Git 分支
 
 ```bash
-git-helper clean [选项]
+git-cleaner clean [选项]
 ```
 
 #### 选项
@@ -82,7 +82,7 @@ git-helper clean [选项]
 预览将要删除的分支
 
 ```bash
-git-helper preview --patterns "feature/*" --local --remote
+git-cleaner preview --patterns "feature/*" --local --remote
 ```
 
 ### config 命令
@@ -91,15 +91,15 @@ git-helper preview --patterns "feature/*" --local --remote
 
 ```bash
 # 初始化配置文件
-git-helper config --init
+git-cleaner config --init
 
 # 设置默认模式
-git-helper config --set defaultPatterns "feature/*,hotfix/*"
-git-helper config --set defaultWhitelist "main,develop"
+git-cleaner config --set defaultPatterns "feature/*,hotfix/*"
+git-cleaner config --set defaultWhitelist "main,develop"
 
 # 查看配置
-git-helper config --list
-git-helper config --get defaultPatterns
+git-cleaner config --list
+git-cleaner config --get defaultPatterns
 ```
 
 ## Glob 模式示例
@@ -116,7 +116,7 @@ git-helper config --get defaultPatterns
 
 ### 全局配置
 
-位置：`~/.git-helper/config.json`
+位置：`~/.git-cleaner/config.json`
 
 ```json
 {
@@ -130,7 +130,7 @@ git-helper config --get defaultPatterns
 
 ### 项目配置
 
-在项目根目录创建 `.git-helper.json`：
+在项目根目录创建 `.git-cleaner.json`：
 
 ```json
 {
@@ -149,20 +149,20 @@ git-helper config --get defaultPatterns
 开发完成后清理本地和远程的功能分支：
 
 ```bash
-git-helper clean -p "feature/*" -l -r --dry-run  # 先预览
-git-helper clean -p "feature/*" -l -r -y         # 确认后执行
+git-cleaner clean -p "feature/*" -l -r --dry-run  # 先预览
+git-cleaner clean -p "feature/*" -l -r -y         # 确认后执行
 ```
 
 ### 场景 2：批量清理多种类型分支
 
 ```bash
-git-helper clean -p "feature/*" "hotfix/*" "bugfix/*" -w "main" "develop" -l
+git-cleaner clean -p "feature/*" "hotfix/*" "bugfix/*" -w "main" "develop" -l
 ```
 
 ### 场景 3：清理个人临时分支
 
 ```bash
-git-helper clean -p "temp-*" "*-wip" "*-backup" -l -f
+git-cleaner clean -p "temp-*" "*-wip" "*-backup" -l -f
 ```
 
 ### 场景 4：定期清理
@@ -171,7 +171,7 @@ git-helper clean -p "temp-*" "*-wip" "*-backup" -l -f
 
 ```bash
 # 每周清理已合并的功能分支
-git-helper clean -p "feature/*" -r -y
+git-cleaner clean -p "feature/*" -r -y
 ```
 
 ## 安全特性
@@ -253,7 +253,7 @@ MIT License
 
 ## 链接
 
-- [NPM Package](https://www.npmjs.com/package/@wilson_janet/git-helper)
-- [GitHub Repository](https://github.com/wilson/git-helper)
-- [Issues](https://github.com/wilson/git-helper/issues)
-- [Release Notes](https://github.com/wilson/git-helper/releases)
+- [NPM Package](https://www.npmjs.com/package/@wilson_janet/git-cleaner)
+- [GitHub Repository](https://github.com/wilson/git-cleaner)
+- [Issues](https://github.com/wilson/git-cleaner/issues)
+- [Release Notes](https://github.com/wilson/git-cleaner/releases)

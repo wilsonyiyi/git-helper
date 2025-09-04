@@ -30,7 +30,7 @@ class CLI {
 
   setupCommands() {
     this.program
-      .name('git-helper')
+      .name('git-cleaner')
       .description('Git 分支清理工具 - 支持 glob 模式和白名单')
       .version(this.getVersion());
 
@@ -92,8 +92,8 @@ class CLI {
       // 验证参数
       if (!finalOptions.patterns || finalOptions.patterns.length === 0) {
         console.log(chalk.yellow('⚠️  请提供至少一个 glob 模式或者配置 defaultPatterns'));
-        console.log(chalk.gray('例如: git-helper clean -p "feature/*" -l'));
-        console.log(chalk.gray('或者: git-helper config --set defaultPatterns "feature/*,hotfix/*"'));
+        console.log(chalk.gray('例如: git-cleaner clean -p "feature/*" -l'));
+        console.log(chalk.gray('或者: git-cleaner config --set defaultPatterns "feature/*,hotfix/*"'));
         process.exit(1);
       }
 
@@ -165,8 +165,8 @@ class CLI {
 
       if (!finalOptions.patterns || finalOptions.patterns.length === 0) {
         console.log(chalk.yellow('⚠️  请提供至少一个 glob 模式或者配置 defaultPatterns'));
-        console.log(chalk.gray('例如: git-helper preview -p "feature/*" -l'));
-        console.log(chalk.gray('或者: git-helper config --set defaultPatterns "feature/*,hotfix/*"'));
+        console.log(chalk.gray('例如: git-cleaner preview -p "feature/*" -l'));
+        console.log(chalk.gray('或者: git-cleaner config --set defaultPatterns "feature/*,hotfix/*"'));
         process.exit(1);
       }
 

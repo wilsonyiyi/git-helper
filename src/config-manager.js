@@ -5,7 +5,7 @@ const chalk = require('chalk');
 
 class ConfigManager {
   constructor() {
-    this.configDir = path.join(os.homedir(), '.git-helper');
+    this.configDir = path.join(os.homedir(), '.git-cleaner');
     this.configFile = path.join(this.configDir, 'config.json');
     this.defaultConfig = {
       defaultPatterns: [],
@@ -131,7 +131,7 @@ class ConfigManager {
    * 获取项目级配置
    */
   getProjectConfig() {
-    const projectConfigFile = path.join(process.cwd(), '.git-helper.json');
+    const projectConfigFile = path.join(process.cwd(), '.git-cleaner.json');
     
     if (fs.existsSync(projectConfigFile)) {
       try {

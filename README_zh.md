@@ -18,7 +18,7 @@
 ```bash
 # 克隆仓库
 git clone <repository-url>
-cd git-helper
+cd git-cleaner
 
 # 运行安装脚本
 ./install.sh
@@ -32,16 +32,16 @@ npm link
 
 ```bash
 # 1. 初始化配置
-git-helper config --init
+git-cleaner config --init
 
 # 2. 预览要删除的分支
-git-helper preview --patterns "feature/*" --local
+git-cleaner preview --patterns "feature/*" --local
 
 # 3. 删除本地 feature 分支（预览模式）
-git-helper clean --patterns "feature/*" --local --dry-run
+git-cleaner clean --patterns "feature/*" --local --dry-run
 
 # 4. 确认无误后实际删除
-git-helper clean --patterns "feature/*" --local
+git-cleaner clean --patterns "feature/*" --local
 ```
 
 ## 📖 详细使用指南
@@ -49,7 +49,7 @@ git-helper clean --patterns "feature/*" --local
 ### 清理命令 (clean)
 
 ```bash
-git-helper clean [选项]
+git-cleaner clean [选项]
 ```
 
 #### 常用选项
@@ -66,20 +66,20 @@ git-helper clean [选项]
 ### 预览命令 (preview)
 
 ```bash
-git-helper preview --patterns "feature/*" --local --remote
+git-cleaner preview --patterns "feature/*" --local --remote
 ```
 
 ### 配置管理 (config)
 
 ```bash
 # 初始化配置文件
-git-helper config --init
+git-cleaner config --init
 
 # 设置默认模式
-git-helper config --set defaultPatterns "feature/*,hotfix/*"
+git-cleaner config --set defaultPatterns "feature/*,hotfix/*"
 
 # 查看所有配置
-git-helper config --list
+git-cleaner config --list
 ```
 
 ## 💡 使用场景
@@ -88,30 +88,30 @@ git-helper config --list
 
 ```bash
 # 预览
-git-helper clean -p "feature/*" -l -r --dry-run
+git-cleaner clean -p "feature/*" -l -r --dry-run
 
 # 执行
-git-helper clean -p "feature/*" -l -r
+git-cleaner clean -p "feature/*" -l -r
 ```
 
 ### 场景 2: 批量清理多种类型分支
 
 ```bash
-git-helper clean -p "feature/*" "hotfix/*" "bugfix/*" \
+git-cleaner clean -p "feature/*" "hotfix/*" "bugfix/*" \
   -w "main" "develop" -l
 ```
 
 ### 场景 3: 清理个人测试分支
 
 ```bash
-git-helper clean -p "test-*" "*-wip" "*-backup" -l -f
+git-cleaner clean -p "test-*" "*-wip" "*-backup" -l -f
 ```
 
 ### 场景 4: 安全清理（推荐）
 
 ```bash
 # 使用白名单保护重要分支
-git-helper clean -p "*" \
+git-cleaner clean -p "*" \
   -w "main" "master" "develop" "staging" "production" \
   -l --dry-run
 ```
@@ -128,7 +128,7 @@ git-helper clean -p "*" \
 
 ## ⚙️ 配置文件
 
-### 全局配置 (~/.git-helper/config.json)
+### 全局配置 (~/.git-cleaner/config.json)
 
 ```json
 {
@@ -140,7 +140,7 @@ git-helper clean -p "*" \
 }
 ```
 
-### 项目配置 (.git-helper.json)
+### 项目配置 (.git-cleaner.json)
 
 ```json
 {

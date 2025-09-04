@@ -53,12 +53,12 @@ jobs:
           ## 📦 安装
           
           ```bash
-          npm install -g @wilson_janet/git-helper
+          npm install -g @wilson_janet/git-cleaner
           ```
           
           ## 🔗 链接
           
-          - [NPM Package](https://www.npmjs.com/package/@wilson_janet/git-helper)
+          - [NPM Package](https://www.npmjs.com/package/@wilson_janet/git-cleaner)
           - [Documentation](./README.md)
           - [中文文档](./README_zh.md)
         draft: false

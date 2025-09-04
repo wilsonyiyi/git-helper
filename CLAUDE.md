@@ -32,19 +32,19 @@ npm run clean              # Clean and reinstall dependencies
 
 - **CLI (`src/cli.js`)**: Command-line interface using Commander.js, handles user interactions and command parsing
 - **GitOperations (`src/git-operations.js`)**: Git operations using simple-git, handles branch filtering, deletion, and preview
-- **ConfigManager (`src/config-manager.js`)**: Configuration management with global (`~/.git-helper/config.json`) and project-level (`.git-helper.json`) support
+- **ConfigManager (`src/config-manager.js`)**: Configuration management with global (`~/.git-cleaner/config.json`) and project-level (`.git-cleaner.json`) support
 
 ### Entry Points
 
-- `bin/git-helper.js`: Main CLI entry point
+- `bin/git-cleaner.js`: Main CLI entry point
 - `src/index.js`: Application bootstrap that creates and runs CLI instance
 
 ### Configuration System
 
 The tool supports hierarchical configuration:
 
-1. **Global config**: `~/.git-helper/config.json`
-2. **Project config**: `.git-helper.json` in project root
+1. **Global config**: `~/.git-cleaner/config.json`
+2. **Project config**: `.git-cleaner.json` in project root
 3. **Command-line args**: Override config file settings
 
 Default configuration includes:

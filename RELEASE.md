@@ -81,8 +81,8 @@ npm run release:beta
 ## 📦 NPM 包配置
 
 ### 包名
-- 完整包名: `@wilson_janet/git-helper`
-- 全局命令: `git-helper`
+- 完整包名: `@wilson_janet/git-cleaner`
+- 全局命令: `git-cleaner`
 
 ### 发布配置
 - 公开访问: `"access": "public"`
@@ -96,7 +96,7 @@ npm run release:beta
 - `bin/` - 可执行文件
 - `README.md` - 主要文档
 - `README_zh.md` - 中文文档  
-- `.git-helper.example.json` - 示例配置
+- `.git-cleaner.example.json` - 示例配置
 
 ## 🛠️ 发布脚本说明
 
@@ -125,16 +125,16 @@ npm run release:beta
 
 ```bash
 # 检查 NPM 包页面
-open https://www.npmjs.com/package/@wilson_janet/git-helper
+open https://www.npmjs.com/package/@wilson_janet/git-cleaner
 
 # 测试全局安装
-npm install -g @wilson_janet/git-helper
-git-helper --version
-git-helper --help
+npm install -g @wilson_janet/git-cleaner
+git-cleaner --version
+git-cleaner --help
 
 # 测试功能
 cd /path/to/git/repo
-git-helper preview --patterns "feature/*" --local
+git-cleaner preview --patterns "feature/*" --local
 ```
 
 ## 🚨 发布故障排除
@@ -154,7 +154,7 @@ git-helper preview --patterns "feature/*" --local
 
 3. **版本冲突**
    ```bash
-   npm view @wilson_janet/git-helper versions --json
+   npm view @wilson_janet/git-cleaner versions --json
    ```
 
 4. **网络问题**
@@ -168,7 +168,7 @@ git-helper preview --patterns "feature/*" --local
 
 ```bash
 # 仅在发布后 72 小时内有效
-npm unpublish @wilson_janet/git-helper@1.0.1 --force
+npm unpublish @wilson_janet/git-cleaner@1.0.1 --force
 
 # 推荐：发布修复版本
 npm run release:patch
@@ -187,8 +187,8 @@ npm run release:patch
 
 如有发布相关问题，请：
 
-1. 查看 [NPM 包页面](https://www.npmjs.com/package/@wilson_janet/git-helper)
-2. 提交 [GitHub Issue](https://github.com/wilson/git-helper/issues)
+1. 查看 [NPM 包页面](https://www.npmjs.com/package/@wilson_janet/git-cleaner)
+2. 提交 [GitHub Issue](https://github.com/wilson/git-cleaner/issues)
 3. 联系维护者
 
 ---
